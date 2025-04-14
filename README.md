@@ -13,3 +13,8 @@ Here, the CEST dataset used for training was generated using analytic simulation
 ## Results and visualisation
 
 ----Need to update that----
+
+_To do list :_
+- _set up download for clean data_
+- _do overview notebook with clean figures_
+
