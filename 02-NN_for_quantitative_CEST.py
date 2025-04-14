@@ -18,6 +18,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from datetime import date
 import os
+from sklearn.model_selection import train_test_split
 
 from NN_quantif_tools.NN_subfunctions import reconstruction_network, train_model
 
@@ -40,14 +41,19 @@ Nacq, B1_list, tsat_list, Offsets_list = read_info(DataName + "Dataset_info.txt"
 
 
 # Prepare training and validation set
-Training_set_size = round(0.8 * N_data)  # 80% for training
-shuffling = th.randperm(N_data)  # shuffle datasets
-Data = Data[shuffling, :]
-Ground_truth = Ground_truth[shuffling, :]
-Training_set = th.FloatTensor(Data[0:Training_set_size, :])
-Ground_truth_training = th.FloatTensor(Ground_truth[0:Training_set_size, :])
-Validation_set = th.FloatTensor(Data[Training_set_size:N_data, :])
-Ground_truth_validation = th.FloatTensor(Ground_truth[Training_set_size:N_data, :])
+(
+    Training_set,
+    Validation_set,
+    Ground_truth_training,
+    Ground_truth_validation,
+) = train_test_split(Data, Ground_truth, test_size=0.2, random_state=current_seed)
+
+# Convert to tensors
+Training_set = th.FloatTensor(Training_set)
+Ground_truth_training = th.FloatTensor(Ground_truth_training)
+Validation_set = th.FloatTensor(Validation_set)
+Ground_truth_validation = th.FloatTensor(Ground_truth_validation)
+
 
 Noutput = Ground_truth_training.size(1)
 
